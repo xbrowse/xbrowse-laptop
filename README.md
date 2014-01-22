@@ -1,7 +1,7 @@
 xBrowse: Laptop Edition
 =======================
 
-This repo provides a quick installer for developers to begin contributing to [xBrowse](atgu.mgh.harvard.edu/xbrowse). 
+This repo provides a quick installer for developers to begin contributing to [xBrowse](https://atgu.mgh.harvard.edu/xbrowse). 
 Deploying an xBrowse instance in the wild is pretty involved, 
 so this repository provides a "getting started" deployment with minimal configuration, smaller reference datasets, etc. 
 
@@ -37,7 +37,7 @@ It is separate for now, because we can't yet commit to dev / prod parity in our 
 
 ## Setting up 
 
-The only prerequisite is that you have [Vagrant](vagrantup.com) installed. 
+The only prerequisite is that you have [Vagrant](http://vagrantup.com) installed. 
 Installation is pretty straightforward on Mac. Make sure the vagrant command line utility is on your PATH: 
 
 	$ vagrant -v
