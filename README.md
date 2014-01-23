@@ -56,7 +56,7 @@ Before you build anything, download and extract a tarball of all the data needed
 (It's 3.8GB, so may take a while...)
 
 	wget ftp://atguftp.mgh.harvard.edu/xbrowse-laptop-downloads.tar.gz
-	tar -xzf ftp://atguftp.mgh.harvard.edu/xbrowse-laptop-downloads.tar.gz
+	tar -xzf xbrowse-laptop-downloads.tar.gz
 
 Now it's time to initialize the VM (this will take ~3 hours). 
 Run the following command: 
