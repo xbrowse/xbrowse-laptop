@@ -85,14 +85,8 @@ pip install -r /vagrant/code/xbrowse-web/requirements.txt
 mkdir /opt/xbrowse
 
 # reference
-cp /vagrant/xbrowse_settings/reference_settings.py /opt/xbrowse/
+cp /vagrant/xbrowse_settings/* /opt/xbrowse/
 mongorestore xbrowse_reference
-
-# popfreq store
-cp /vagrant/xbrowse_settings/popfreq_store_settings.py /opt/xbrowse/
-
-# annotator
-cp /vagrant/xbrowse_settings/vep_settings.py /opt/xbrowse/
 
 # init xbrowse server
 cp /vagrant/local_settings.py /vagrant/code/xbrowse-web/xbrowse_server/

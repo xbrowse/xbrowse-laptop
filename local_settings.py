@@ -4,6 +4,7 @@ from xbrowse.datastore.population_datastore import PopulationDatastore
 from xbrowse.datastore.project_datastore import ProjectDatastore
 from xbrowse.coverage import CoverageDatastore
 from xbrowse.datastore import MongoDatastore
+from xbrowse.cnv import CNVStore
 
 import os
 import pymongo
@@ -77,9 +78,12 @@ vep_settings = imp.load_source(
 )
 VEP_ANNOTATOR = HackedVEPAnnotator(vep_settings)
 
-annotator_db = pymongo.Connection()['xbrowse_annotator']
+annotator_settings = imp.load_source(
+    'annotator_settings',
+    SETTINGS_DIR + 'annotator_settings.py'
+)
 ANNOTATOR = VariantAnnotator(
-    db=annotator_db,
+    settings_module=annotator_settings,
     reference=REFERENCE,
     population_frequency_store=POPULATION_FREQUENCY_STORE,
     vep_annotator=VEP_ANNOTATOR,
@@ -97,3 +101,9 @@ COVERAGE_STORE = CoverageDatastore(coverage_db, REFERENCE)
 
 project_datastore_db = _conn['xbrowse_proj_store']
 PROJECT_DATASTORE = ProjectDatastore(project_datastore_db, ANNOTATOR)
+
+cnv_store_settings = imp.load_source(
+    'cnv_store_settings',
+    SETTINGS_DIR + 'cnv_store_settings.py'
+)
+CNV_STORE = CNVStore(cnv_store_settings, REFERENCE)
