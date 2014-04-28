@@ -58,18 +58,20 @@ Before you build anything, download and extract a tarball of all the data needed
 	wget ftp://atguftp.mgh.harvard.edu/xbrowse-laptop-downloads.tar.gz
 	tar -xzf xbrowse-laptop-downloads.tar.gz
 
-Now it's time to initialize the VM (this will take ~3 hours). 
+Now it's time to initialize the VM (this will take ~30 minutes). 
 Run the following command: 
 
 	vagrant up
 
 This command does the following: 
 
-- Creates and provisions a virtual machine that can run xBrowse
+- Creates a virtual machine that can run xBrowse
+
+- Provisions the machine with required packages
 
 - Downloads the xBrowse source code into a shared directory
 
-- Creates and loads an xBrowse project with 1000 genomes samples. 
+- Initializes the machine as a "valid" xbrowse instance. 
 
 If curious, all of these steps are contained in `bootstrap.sh`. 
 (Indeed, we'll need a much better way to organize these steps, but this was easiest for now.)
@@ -78,7 +80,41 @@ If curious, all of these steps are contained in `bootstrap.sh`.
 
 When `vagrant up` finishes, visit `http://localhost:8000` in your web browser - you should see the familiar homepage! 
 
-Log in with username `admin` and password `admin` - and you should see a single project *1000 Genomes Test*. 
+You can log in to xbrowse with username `admin` and password `admin`. 
+
+### Loading a Project
+
+However, this homepage won't have any data. 
+Now we'll go through the process of actually adding a project that you can use for testing. 
+
+First, log in to the "server", which is actually just the virutal machine on your laptop: 
+
+	vagrant ssh
+
+Pretty cool, eh! before you do anything, run the following: 
+
+	source ~/xbrowse.sh
+
+That just moves you to the right directory, and activates the appropriate python virtual environment. 
+
+Now you can run command line utilities that manage an xbrowse instance. 
+We'll first create a project using the `add_project` command. We'll call the project `1kg`: 
+
+	./manage.py add_project 1kg
+
+Now step back out to your *host machine's browser* and visit localhost:8000 again. See the project there? 
+Of course there is no data, though. 
+
+To add data to the project, run the following: 
+
+	./manage.py add_individuals_to_project 1kg --fam-file /home/vagrant/1kg.ped
+	./manage.py set_vcf 1kg /home/vagrant/1kg.vcf 
+
+That adds these pedigrees to the project and assigns "sets" a VCF file to them. 
+Just one more command - we have to load the VCF file into a database that allows fast access. 
+Alas, this is the time intensive step, and can take a couple hours: 
+
+	./manage.py reload 1kg 
 
 ## Development
 

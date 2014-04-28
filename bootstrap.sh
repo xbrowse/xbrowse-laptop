@@ -93,6 +93,7 @@ cp /vagrant/local_settings.py /vagrant/code/xbrowse-web/xbrowse_server/
 cp -r /vagrant/server_files /home/vagrant/
 cd /vagrant/code/xbrowse-web
 ./manage.py syncdb --noinput
+chmod 777 /home/vagrant/database.sqlite
 ./manage.py migrate --all
 
 #
@@ -121,11 +122,11 @@ cd /vagrant/code/xbrowse-web
 ./manage.py rebuild --popfreq
 
 # create user 
-export DJANGO_SETTINGS_MODULE='xbrowse_server.settings'
+source /home/vagrant/xbrowse.sh
 python -c """from django.contrib.auth.models import User; User.objects.create_superuser('admin', 'admin@example.com', 'admin')"""
 
-# create xbrowse project 
-./manage.py add_project 1kg
-./manage.py add_individuals_to_project 1kg --fam-file /home/vagrant/1kg.ped
-./manage.py set_vcf 1kg /home/vagrant/1kg.vcf 
-./manage.py reload 1kg --no-async
+# # create xbrowse project 
+# ./manage.py add_project 1kg
+# ./manage.py add_individuals_to_project 1kg --fam-file /home/vagrant/1kg.ped
+# ./manage.py set_vcf 1kg /home/vagrant/1kg.vcf 
+# ./manage.py reload 1kg
