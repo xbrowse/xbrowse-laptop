@@ -91,6 +91,7 @@ mongorestore xbrowse_reference
 # init xbrowse server
 cp /vagrant/local_settings.py /vagrant/code/xbrowse-web/xbrowse_server/
 cp -r /vagrant/server_files /home/vagrant/
+cp -r /vagrant/xbrowse.sh /home/vagrant/
 cd /vagrant/code/xbrowse-web
 ./manage.py syncdb --noinput
 chmod 777 /home/vagrant/database.sqlite
