@@ -7,6 +7,8 @@ so this repository provides a "getting started" deployment with minimal configur
 
 Note that this installation should **not** be used to deploy xBrowse in production. xBrowse is still in *beta*, and we aren't ready to endorse it for external use yet. (Hopefully soon!)
 
+
+
 ## How It Works 
 
 This repository provides code for installing up a lightweight instance 
@@ -19,6 +21,8 @@ The xBrowse application code is mounted on a "shared" directory - meaning it is 
 So, you follow the standard development workflow: edit the code, refresh your browser, and check out the changes. 
 However, no code is actually executed on your laptop - it all happens within the VM. 
 
+
+
 ## Preparing 
 
 The only prerequisite is that you have [Vagrant](http://vagrantup.com) installed. 
@@ -29,93 +33,78 @@ Installation is pretty straightforward on Mac. Make sure the vagrant command lin
 
 After Vagrant is installed, clone this repository: 
 
-	git clone https://github.com/xbrowse/xbrowse-laptop
+	git clone https://github.com/xbrowse/xbrowse-laptop.git
 	cd xbrowse-laptop
 
-From now on, consider `xbrowse-laptop` the working directory for this installation. 
-It will be mounted to the VM as a shared directory, and many of the file paths are hardcoded. 
+From now on, consider `xbrowse-laptop` the working directory for this installation - it will be mounted to the VM as a shared directory.  
 
-Before you build anything, you need to download a couple other resources to this working directory. 
+Before you build anything, you also need to download a couple other resources to this working directory.
+First, clone the xBrowse repository: 
 
-download and extract a tarball of all the data needed for this deployment. 
+	 git clone https://github.com/xbrowse/xbrowse.git
+
+Next, download and extract a tarball of all the resource data needed for this deployment. 
 (It's 3.8GB, so may take a while...)
 
 	wget ftp://atguftp.mgh.harvard.edu/xbrowse-laptop-downloads.tar.gz
 	tar -xzf xbrowse-laptop-downloads.tar.gz
 
-Now it's time to initialize the VM (this will take ~30 minutes). 
-Run the following command: 
+At this point, make sure the xbrowse-laptop directory (the same one with this README.md file) should 
+have the directories `xbrowse` and `xbrowse-laptop-downloads`. 
+(Many of the file paths within the VM are hardcoded.) 
 
-	vagrant up
 
-This command does the following: 
-
-- Creates a virtual machine that can run xBrowse
-
-- Provisions the machine with required packages
-
-- Downloads the xBrowse source code into a shared directory
-
-- Initializes the machine as a "valid" xbrowse instance. 
-
-If curious, all of these steps are contained in `bootstrap.sh`. 
-(Indeed, we'll need a much better way to organize these steps, but this was easiest for now.)
 
 ## Provisioning the machine 
 
+Now it's time to create the actual VM. 
+Run the following command (this will take ~30 minutes): 
+
+	vagrant up
+
+This provisions a base Ubuntu box (14.04). If curious, you can check out the steps in `bootstrap.sh`. 
+
 ## Setting up xBrowse
 
-### Running xBrowse
+The VM is now set up to run xBrowse, but the xBrowse instance has not been set up yet. We'll do that now. 
 
-When `vagrant up` finishes, visit `http://localhost:8000` in your web browser - you should see the familiar homepage! 
-
-You can log in to xbrowse with username `admin` and password `admin`. 
-
-### Loading a Project
-
-However, this homepage won't have any data. 
-Now we'll go through the process of actually adding a project that you can use for testing. 
-
-First, log in to the "server", which is actually just the virutal machine on your laptop: 
+First, log in to the VM: 
 
 	vagrant ssh
 
-Pretty cool, eh! before you do anything, run the following: 
+This is analogous to logging in to a remote web server, but it's actually on your laptop. 
+Once you're logged in, run the following command: 
 
-	source ~/xbrowse.sh
+	./manage.py syncdb --all
 
-That just moves you to the right directory, and activates the appropriate python virtual environment. 
+This is a Django command that creates the database xBrowse uses to store users and other website data. 
+It will ask you to create a username and password for the "superuser" - this is just stored locally, it can be anything. 
 
-Now you can run command line utilities that manage an xbrowse instance. 
-We'll first create a project using the `add_project` command. We'll call the project `1kg`: 
+`syncdb` doesn't create any of the actual scientific resources. We need to run another command for that: 
+
+	./manage.py load_resources
+
+This will take ~20 minutes. (Note that there are multiple progress bars in sequence.)
+
+xBrowse is now fully installed. You can visit http://localhost:8000 on your web browser and log in with the username you just created. 
+
+## Loading data
+
+Now we'll finally create an xBrowse project for analysis. Again from within the machine, run the following command: 
 
 	./manage.py add_project 1kg
 
-Now step back out to your *host machine's browser* and visit localhost:8000 again. See the project there? 
-Of course there is no data, though. 
+Now refresh xBrowse - you should see the project there. To add the individuals: 
 
-To add data to the project, run the following: 
+	./manage.py add_individuals_to_project 1kg --ped /vagrant/xbrowse-laptop-downloads/1kg.ped
 
-	./manage.py add_individuals_to_project 1kg --fam-file /home/vagrant/1kg.ped
-	./manage.py set_vcf 1kg /home/vagrant/1kg.vcf 
+And to add a VCF file: 
 
-That adds these pedigrees to the project and assigns "sets" a VCF file to them. 
-Just one more command - we have to load the VCF file into a database that allows fast access. 
-Alas, this is the time intensive step, and can take a couple hours: 
+	./manage.py add_vcf_to_project 1kg /vagrant/xbrowse-laptop-downloads/1kg.vcf
 
-	./manage.py reload 1kg 
+This links the VCF file to the project, but doesn't load the data. We need to run one final command to load everything: 
 
-## Development
+	./manage.py reload 1kg
 
-See *code organization* above - the application code is located in two directories, `code/xbrowse` and `code/xbrowse-web`. 
-Note that these are not git submodules - they are included in .gitignore and are totally separate repositories. 
+`reload` will take about an hour - it has to parse all the variants from the VCF file, annotate them, and load them into the variant database. (Annotation is the time bottleneck.)
 
-## Troubleshooting
-
-- Note that the provsioning process is unfortunatley not idempotent. (Does idempotent have an antonym?)
-If the provisioning process breaks, it's  best to destroy and rebuild the virutal machine. (`vagrant destroy` then `vagrant up` again) 
-Of course, if the error recurs, open an issue. 
-
-- The most common error after provisioning occurs (nondeterministically) when you lose an internet connection - sometimes the guest machine will lose a network connection too that can't be repaired. If this happens, run `vagrant reload` - this restarts the VM. 
-
-- This development version deos need an internet connection (though this is an open issue)
