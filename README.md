@@ -19,7 +19,7 @@ The xBrowse application code is mounted on a "shared" directory - meaning it is 
 So, you follow the standard development workflow: edit the code, refresh your browser, and check out the changes. 
 However, no code is actually executed on your laptop - it all happens within the VM. 
 
-## Setting up 
+## Preparing 
 
 The only prerequisite is that you have [Vagrant](http://vagrantup.com) installed. 
 Installation is pretty straightforward on Mac. Make sure the vagrant command line utility is on your PATH: 
@@ -32,11 +32,12 @@ After Vagrant is installed, clone this repository:
 	git clone https://github.com/xbrowse/xbrowse-laptop
 	cd xbrowse-laptop
 
-Consider `xbrowse-laptop` the "working" directory for this installation - 
-it will be mounted to the VM as a shared directory. 
-It's important to get the file paths right, as they are hardcoded within the VM. 
+From now on, consider `xbrowse-laptop` the working directory for this installation. 
+It will be mounted to the VM as a shared directory, and many of the file paths are hardcoded. 
 
-Before you build anything, download and extract a tarball of all the data needed for this deployment. 
+Before you build anything, you need to download a couple other resources to this working directory. 
+
+download and extract a tarball of all the data needed for this deployment. 
 (It's 3.8GB, so may take a while...)
 
 	wget ftp://atguftp.mgh.harvard.edu/xbrowse-laptop-downloads.tar.gz
@@ -59,6 +60,10 @@ This command does the following:
 
 If curious, all of these steps are contained in `bootstrap.sh`. 
 (Indeed, we'll need a much better way to organize these steps, but this was easiest for now.)
+
+## Provisioning the machine 
+
+## Setting up xBrowse
 
 ### Running xBrowse
 
