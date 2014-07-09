@@ -3,7 +3,7 @@ server {
     listen 8000;
 
     location /static/ {
-        alias /vagrant/code/xbrowse-web/xbrowse_server/staticfiles/;
+        alias /vagrant/xbrowse/xbrowse_server/staticfiles/;
     }
 
     location / {

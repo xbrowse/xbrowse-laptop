@@ -5,7 +5,7 @@ This repo provides a quick installer for developers to begin contributing to [xB
 Deploying an xBrowse instance in the wild is pretty involved, 
 so this repository provides a "getting started" deployment with minimal configuration, smaller reference datasets, etc. 
 
-Note that this installation should **not** be used to deploy xBrowse on your own production servers - that is still in progress. 
+Note that this installation should **not** be used to deploy xBrowse in production. xBrowse is still in *beta*, and we aren't ready to endorse it for external use yet. (Hopefully soon!)
 
 ## How It Works 
 
@@ -19,31 +19,15 @@ The xBrowse application code is mounted on a "shared" directory - meaning it is 
 So, you follow the standard development workflow: edit the code, refresh your browser, and check out the changes. 
 However, no code is actually executed on your laptop - it all happens within the VM. 
 
-## Code Organization
-
-The xBrowse application code is actually separated into two repositories: 
-
-- [xbrowse](https://github.com/xbrowse/xbrowse) contains the analysis code
-
-- [xbrowse-web](https://github.com/xbrowse/xbrowse-web) contains web server code. 
-
-The goal of two repositories was to enforce a strict separation between the science code and the web server code, 
-both for organization and to ensure that xBrowse can be run fully on the command line. 
-Unfortunately we've been undisciplined, and xbrowse is currently pretty useless without an xbrowse-web installation. 
-Command line usage is still on the roadmap, though. 
-
-This repository, [xbrowse-laptop](https://github.com/xbrowse/xbrowse-laptop), will probably be merged into xbrowse-web at some point. 
-It is separate for now, because we can't yet commit to dev / prod parity in our deployment code (due to the infrastructure that xBrowse is currently forced to run on).
-
 ## Setting up 
 
 The only prerequisite is that you have [Vagrant](http://vagrantup.com) installed. 
 Installation is pretty straightforward on Mac. Make sure the vagrant command line utility is on your PATH: 
 
 	$ vagrant -v
-	Vagrant 1.4.2
+	Vagrant 1.6.3
 
-After Vagrant is installed, clone the repository: 
+After Vagrant is installed, clone this repository: 
 
 	git clone https://github.com/xbrowse/xbrowse-laptop
 	cd xbrowse-laptop
