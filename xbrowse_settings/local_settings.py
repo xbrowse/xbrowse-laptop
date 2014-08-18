@@ -50,41 +50,33 @@ COMMON_SNP_FILE = "/vagrant/xbrowse-laptop-downloads/markers.txt"
 REFERENCEDATA_DIR = os.path.dirname(os.path.realpath(__file__)) + '/'
 HGMD_OMIM_FILE = '/vagrant/xbrowse-laptop-downloads/hgmd_omim_genes.txt'
 
-reference_settings = imp.load_source(
+REFERENCE_SETTINGS = imp.load_source(
     'reference_settings',
     os.path.dirname(os.path.realpath(__file__)) + '/reference_settings.py'
 )
-REFERENCE = Reference(reference_settings)
+CUSTOM_ANNOTATOR_SETTINGS = None
 
-CUSTOM_ANNOTATOR = None
-
-annotator_settings = imp.load_source(
+ANNOTATOR_SETTINGS = imp.load_source(
     'annotator_settings',
     os.path.dirname(os.path.realpath(__file__)) + '/annotator_settings.py'
 )
-ANNOTATOR = VariantAnnotator(
-    settings_module=annotator_settings,
-    custom_annotator=CUSTOM_ANNOTATOR,
-)
 
 _conn = pymongo.Connection()
-datastore_db = _conn['xbrowse_datastore']
-population_datastore_db = _conn['xbrowse_pop_datastore']
+DATASTORE_DB = _conn['xbrowse_datastore']
+POPULATION_DATASTORE_DB = _conn['xbrowse_pop_datastore']
 
-# datastore_settings = imp.load_source(
-#     'datastore_settings',
-#     os.path.dirname(os.path.realpath(__file__)) + '/datastore_settings.py'
-# )
-DATASTORE = MongoDatastore(datastore_db, ANNOTATOR)
+DEFAULT_CONTROL_COHORT = 'controls'
+CONTROL_COHORTS = [
+    {
+        'slug': 'controls',
+        'vcf': '',
+    },
+]
 
+COVERAGE_DB = _conn['xbrowse_coverage']
 
-POPULATION_DATASTORE = PopulationDatastore(population_datastore_db, ANNOTATOR)
+PROJECT_DATASTORE_DB = _conn['xbrowse_proj_store']
 
-coverage_db = _conn['xbrowse_coverage']
-COVERAGE_STORE = CoverageDatastore(coverage_db, REFERENCE)
+CNV_STORE_DB_NAME = 'xbrowse_cnvs'
 
-project_datastore_db = _conn['xbrowse_proj_store']
-PROJECT_DATASTORE = ProjectDatastore(project_datastore_db, ANNOTATOR)
-
-
-CNV_STORE = CNVStore('xbrowse_cnvs', REFERENCE)
+CUSTOM_POPULATIONS_DB = _conn['xcustom_refpops']
