@@ -81,7 +81,8 @@ Once you're logged in, run the following command:
 	./manage.py syncdb --all
 
 This is a Django command that creates the database xBrowse uses to store users and other website data. 
-It will ask you to create a username and password for the "superuser" - this is just stored locally, it can be anything. 
+It will ask you to create a username and password for the "superuser" - this is just stored locally, it can be anything.
+Once the local webserver is up and running, you will use this username and password to "Sign in" on the website.
 
 `syncdb` doesn't create any of the actual scientific resources. We need to run another command for that: 
 
