@@ -25,7 +25,10 @@ However, no code is actually executed on your laptop - it all happens within the
 
 ## Preparing 
 
-The only prerequisite is that you have [Vagrant](http://vagrantup.com) installed. 
+The only prerequisites are that you have these 2 virtualization tools installed:
+* [VirtualBox](https://www.virtualbox.org/) 
+* [Vagrant](http://vagrantup.com) 
+
 Installation is pretty straightforward on Mac. Make sure the vagrant command line utility is on your PATH: 
 
 	$ vagrant -v
