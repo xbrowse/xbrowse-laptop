@@ -108,7 +108,7 @@ And to add a VCF file:
 
 This links the VCF file to the project, but doesn't load the data. We need to run one final command to load everything: 
 
-	./manage.py reload 1kg
+	./manage.py load_project 1kg
 
 `reload` will take about an hour - it has to parse all the variants from the VCF file, annotate them, and load them into the variant database. (Annotation is the time bottleneck.)
 
