@@ -76,7 +76,11 @@ First, log in to the VM:
 	vagrant ssh
 
 This is analogous to logging in to a remote web server, but it's actually on your laptop. 
-Once you're logged in, run the following command: 
+Once you're logged in, you will need to switch to root (the password is 'vagrant'):
+
+        su  
+
+Then, run the following command: 
 
 	./manage.py syncdb --all
 
@@ -110,5 +114,5 @@ This links the VCF file to the project, but doesn't load the data. We need to ru
 
 	./manage.py load_project 1kg
 
-`reload` will take about an hour - it has to parse all the variants from the VCF file, annotate them, and load them into the variant database. (Annotation is the time bottleneck.)
+`load_project` will take ~1 hour - it has to parse all the variants from the VCF file, annotate them, and load them into the variant database. (Annotation is the time bottleneck.)
 
