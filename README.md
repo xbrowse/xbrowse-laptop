@@ -22,7 +22,10 @@ However, no code is actually executed on your laptop - it all happens within the
 
 ## Preparing 
 
-The only prerequisite is that you have [Vagrant](http://vagrantup.com) installed. 
+The only prerequisites are that you have these 2 virtualization tools installed:
+* [VirtualBox](https://www.virtualbox.org/) 
+* [Vagrant](http://vagrantup.com) 
+
 Installation is pretty straightforward on Mac. Make sure the vagrant command line utility is on your PATH: 
 
 	$ vagrant -v
@@ -73,12 +76,17 @@ First, log in to the VM:
 	vagrant ssh
 
 This is analogous to logging in to a remote web server, but it's actually on your laptop. 
-Once you're logged in, run the following command: 
+Once you're logged in, you will need to switch to root (the password is 'vagrant'):
+
+        su  
+
+Then, run the following command: 
 
 	./manage.py syncdb --all
 
 This is a Django command that creates the database xBrowse uses to store users and other website data. 
-It will ask you to create a username and password for the "superuser" - this is just stored locally, it can be anything. 
+It will ask you to create a username and password for the "superuser" - this is just stored locally, it can be anything.
+Once the local webserver is up and running, you will use this username and password to "Sign in" on the website.
 
 `syncdb` doesn't create any of the actual scientific resources. We need to run another command for that: 
 
@@ -92,4 +100,3 @@ xBrowse is now fully installed. You can visit http://localhost:8000 on your web 
 
 That's it - xBrowse is all set up! 
 However, you'll want to actually load some data. For that, pick up at the instructions in the main xbrowse repository: https://github.com/xbrowse/xbrowse#add-a-project
-

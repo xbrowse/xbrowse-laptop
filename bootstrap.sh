@@ -21,6 +21,7 @@ pip install psycopg2
 # mongodb
 apt-get install -y mongodb
 mkdir -p /data/db
+pip install django-crispy-forms
 
 # VEP
 apt-get install -y libdbi-perl
