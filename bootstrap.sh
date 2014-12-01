@@ -11,7 +11,7 @@ apt-get install -y python-dev python-setuptools
 easy_install pip
 
 # postgres 
-apt-get install -y libpq-dev postgresql postgresql-contrib 
+apt-get install -y libpq-dev postgresql postgresql-contrib postgresql-devel
 sudo -u postgres createdb xbrowsedb
 sudo -u postgres createuser xbrowseuser --superuser
 sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE xbrowsedb TO xbrowseuser;"

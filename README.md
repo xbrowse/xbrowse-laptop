@@ -7,8 +7,6 @@ so this repository provides a "getting started" deployment with minimal configur
 
 Note that this installation should **not** be used to deploy xBrowse in production. xBrowse is still in *beta*, and we aren't ready to endorse it for external use yet. (Hopefully soon!)
 
-
-
 ## How It Works 
 
 This repository provides code for installing up a lightweight instance 
@@ -20,7 +18,6 @@ but you can visit this version of the xBrowse website on your laptop's web brows
 The xBrowse application code is mounted on a "shared" directory - meaning it is accessible by both your laptop and the VM. 
 So, you follow the standard development workflow: edit the code, refresh your browser, and check out the changes. 
 However, no code is actually executed on your laptop - it all happens within the VM. 
-
 
 
 ## Preparing 
@@ -43,17 +40,20 @@ First, clone the xBrowse repository:
 
 	 git clone https://github.com/xbrowse/xbrowse.git
 
-Next, download and extract a tarball of all the resource data needed for this deployment. 
+Next, download and extract a tarball with some resource data needed for this deployment. 
 (It's 3.8GB, so may take a while...)
 
 	wget ftp://atguftp.mgh.harvard.edu/xbrowse-laptop-downloads.tar.gz
 	tar -xzf xbrowse-laptop-downloads.tar.gz
 
+Finally, there is one resource that is not included in that tarball - the ExAC Allele Frequencies. 
+Download that too: 
+
+	wget ftp://ftp.broadinstitute.org/pub/ExAC_release/release0.2/ExAC.r0.2.sites.vep.vcf.gz
+
 At this point, make sure the xbrowse-laptop directory (the same one with this README.md file) should 
-have the directories `xbrowse` and `xbrowse-laptop-downloads`. 
+have the directories `xbrowse` and `xbrowse-laptop-downloads`, and one file `ExAC.r0.2.sites.vep.vcf.gz`. 
 (Many of the file paths within the VM are hardcoded.) 
-
-
 
 ## Provisioning the machine 
 
@@ -90,21 +90,6 @@ xBrowse is now fully installed. You can visit http://localhost:8000 on your web 
 
 ## Loading data
 
-Now we'll finally create an xBrowse project for analysis. Again from within the machine, run the following command: 
-
-	./manage.py add_project 1kg
-
-Now refresh xBrowse - you should see the project there. To add the individuals: 
-
-	./manage.py add_individuals_to_project 1kg --ped /vagrant/xbrowse-laptop-downloads/1kg.ped
-
-And to add a VCF file: 
-
-	./manage.py add_vcf_to_project 1kg /vagrant/xbrowse-laptop-downloads/1kg.vcf
-
-This links the VCF file to the project, but doesn't load the data. We need to run one final command to load everything: 
-
-	./manage.py reload 1kg
-
-`reload` will take about an hour - it has to parse all the variants from the VCF file, annotate them, and load them into the variant database. (Annotation is the time bottleneck.)
+That's it - xBrowse is all set up! 
+However, you'll want to actually load some data. For that, pick up at the instructions in the main xbrowse repository: https://github.com/xbrowse/xbrowse#add-a-project
 
