@@ -8,10 +8,10 @@ vep_batch_size = 50000
 
 reference_populations = [
     {
-        'slug': 'g1k_all',
-        'name': '1000 Genomes',
+        'slug': 'exac',
+        'name': 'ExAC',
         'file_type': 'sites_vcf',
-        'file_path': '/vagrant/xbrowse-laptop-downloads/1000genomes.sites.vcf.gz',
+        'file_path': '/vagrant/ExAC.r0.2.sites.vep.vcf.gz',
         'vcf_info_key': 'AF',
     },
 ]
