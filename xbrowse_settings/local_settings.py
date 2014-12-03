@@ -1,6 +1,5 @@
 from xbrowse.reference import Reference
 from xbrowse.annotation import VariantAnnotator
-from xbrowse.datastore.project_datastore import ProjectDatastore
 from xbrowse.coverage import CoverageDatastore
 from xbrowse.datastore import MongoDatastore
 from xbrowse.cnv import CNVStore
